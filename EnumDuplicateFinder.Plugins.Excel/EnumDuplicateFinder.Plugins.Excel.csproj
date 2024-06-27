@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EnumDuplicateFinder.Core\EnumDuplicateFinder.Core.csproj" />
+  </ItemGroup>
+  
+</Project>
