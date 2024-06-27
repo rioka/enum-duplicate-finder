@@ -38,6 +38,13 @@ public class Sanitizer
         consolidated[typeName] = filtered
           .Select(f => f.Type)
           .ToArray();
+        _logger.LogInformation("{Type} has {Count} possible duplicate(s): {Duplicates}", 
+          typeName, filtered.Count, string.Join(',', filtered.Select(f => f.Type.FullName)));
+      }
+      else
+      {
+        _logger.LogInformation("No likely duplicate definition found for {Type} out of {Candidates}", 
+          typeName, string.Join(',', matches.Select(m => m.FullName)));
       }
     }
 
