@@ -32,6 +32,8 @@ public class DuplicateDetector
   /// </remarks>
   public IDictionary<string, (TypeDefinition Type , IList<TypeDefinition> Duplicates)> FindDuplicatedTypes(IEnumerable<AssemblyDefinition> assemblies)
   {
+    const string GeneratedCodeAttribute = "System.CodeDom.Compiler.GeneratedCodeAttribute";
+    
     var assembliesAsList = assemblies.ToList();
     _logger.LogInformation("Scanning {Count} assemblies for potentially duplicated enum types", assembliesAsList.Count);
     
@@ -42,6 +44,8 @@ public class DuplicateDetector
       .SelectMany(m => m.Types)
       .Where(t => t.IsPublic)
       .Where(t => t.IsEnum)
+      // Ignore compiler-generated code
+      .Where(t => t.CustomAttributes.FirstOrDefault(ca => ca.AttributeType.FullName == GeneratedCodeAttribute) == null)
       .ToDictionary(t => t.FullName, t => t);
 
     _logger.LogInformation("{Count} (public) enum types found", enumTypes.Count);
