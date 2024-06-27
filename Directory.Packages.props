@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <!--<GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" />-->
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
     <PackageVersion Include="Mono.Cecil" Version="0.11.5" />
   </ItemGroup>
 
