@@ -12,6 +12,17 @@ internal class AssemblyLoader
     _logger = logger;
   }
   
+  /// <summary>
+  /// Scan <paramref name="path"/> for assemblies, and load those who satisfy <paramref name="filter"/>.
+  /// </summary>
+  /// <param name="path">A path</param>
+  /// <param name="filter">
+  /// <para>
+  /// A predicate.
+  /// </para>
+  /// <para>Files whose name does not satisfy this predicate are not loaded.</para>
+  /// </param>
+  /// <returns>A list of <see cref="AssemblyDefinition"/></returns>
   public IEnumerable<AssemblyDefinition> LoadAssembliesInFolder(string path, Func<string, bool> filter)
   {
     var parameters = BuildParameters(path);
