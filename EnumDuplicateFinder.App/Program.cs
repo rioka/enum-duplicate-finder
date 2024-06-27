@@ -1,4 +1,5 @@
 ﻿using EnumDuplicateFinder.Core;
+using EnumDuplicateFinder.Plugins.Excel;
 using Microsoft.Extensions.Logging;
 using Mono.Cecil;
 
@@ -25,7 +26,7 @@ internal class Program
   private static readonly Func<string, bool> AssemblySelector = s => 
     TargetAssemblyPrefixes.FirstOrDefault(a => s.StartsWith(a, StringComparison.OrdinalIgnoreCase)) != null;
   
-  public static void Main(string[] args)
+  public static async Task Main(string[] args)
   {
     // args is expected to be a list of folder to be scanned for enum types
     
@@ -43,5 +44,11 @@ internal class Program
 
     var sanitizer = new Sanitizer(loggerFactory.CreateLogger<Sanitizer>());
     var consolidated = sanitizer.ConsolidateResults(duplicates);
+
+    var exporter = new ExcelExport();
+    var saveTo = $"Export_{DateTime.UtcNow:O}.xlsx"
+      .Replace("-", "")
+      .Replace(":", "");
+    await exporter.SaveTo(consolidated, saveTo);
   }
 }

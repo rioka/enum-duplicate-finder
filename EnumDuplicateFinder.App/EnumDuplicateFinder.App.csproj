@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EnumDuplicateFinder.Core\EnumDuplicateFinder.Core.csproj" />
+    <ProjectReference Include="..\EnumDuplicateFinder.Plugins.Excel\EnumDuplicateFinder.Plugins.Excel.csproj" />
   </ItemGroup>
 
 </Project>
