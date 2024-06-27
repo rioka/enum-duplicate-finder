@@ -3,7 +3,7 @@ using Mono.Cecil;
 
 namespace EnumDuplicateFinder.Core;
 
-internal class Sanitizer
+public class Sanitizer
 {
   private readonly ILogger<Sanitizer> _logger;
 

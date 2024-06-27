@@ -3,7 +3,7 @@ using Mono.Cecil;
 
 namespace EnumDuplicateFinder.Core;
 
-internal class DuplicateDetector
+public class DuplicateDetector
 {
   private readonly ILogger<DuplicateDetector> _logger;
 
