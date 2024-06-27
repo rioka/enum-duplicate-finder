@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Fastenshtein" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
     <PackageReference Include="Mono.Cecil" />
   </ItemGroup>
