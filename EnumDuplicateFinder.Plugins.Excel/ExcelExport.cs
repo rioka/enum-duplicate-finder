@@ -19,9 +19,12 @@ public class ExcelExport : IFileExport<IDictionary<string, (TypeDefinition, Type
     foreach (var (key, (enumType, types)) in content)
     {
       SetContent(ws, lastRow, StartCol, key);
+      SetContent(ws, lastRow, StartCol + 1, DumpValues(enumType));
+      
       foreach (var type in types)
       {
-        SetContent(ws, lastRow, StartCol + 1, type.FullName);
+        SetContent(ws, lastRow, StartCol + 2, type.FullName);
+        SetContent(ws, lastRow, StartCol + 3, DumpValues(type));
         lastRow++;
       }
     }
@@ -43,7 +46,9 @@ public class ExcelExport : IFileExport<IDictionary<string, (TypeDefinition, Type
     var col = StartCol;
     
     SetContent(ws, StartRow, col, "Type", true);
+    SetContent(ws, StartRow, ++col, "Values", true);
     SetContent(ws, StartRow, ++col, "Possible duplicate definitions", true);
+    SetContent(ws, StartRow, ++col, "Values", true);
 
     return StartRow + 1;
   }
@@ -67,6 +72,13 @@ public class ExcelExport : IFileExport<IDictionary<string, (TypeDefinition, Type
       cell.Style.Font.Bold = true;
     }
     return cell;
+  }
+
+  private string DumpValues(TypeDefinition type)
+  {
+    return string.Join(',', type.Fields
+      .Where(f => f.IsLiteral)
+      .Select(f => $"{f.Name} = {f.Constant}"));
   }
   
   #endregion
