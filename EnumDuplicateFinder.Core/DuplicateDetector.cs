@@ -20,7 +20,12 @@ public class DuplicateDetector
   /// For a type to be identified as a potential duplicate of another, at least two values must match
   /// </para>
   /// </summary>
-  /// <param name="assemblies">A list of <see cref="AssemblyDefinition"/></param>
+  /// <param name="assemblies">
+  /// <para>
+  /// A list of <see cref="AssemblyDefinition"/>.
+  /// </para>
+  /// <para>This list is scanned for duplicated items, using <c>AssemblyDefinition.MainModule.FileName</c> to identify duplicates.</para>
+  /// </param>
   /// <returns>A map of enum type and their potential duplicated definitions.</returns>
   /// <remarks>
   /// All logic is hard-coded now; we cna change this later.
