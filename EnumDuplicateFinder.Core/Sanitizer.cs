@@ -21,10 +21,10 @@ public class Sanitizer
   /// <param name="candidates">A map of types and their potential duplicates.</param>
   /// <returns>Another map spurious duplicated types have been removed from.</returns>
   /// <remarks>All logic is hard-coded for now.</remarks>
-  public IDictionary<string, TypeDefinition[]> ConsolidateResults(IDictionary<string, IList<TypeDefinition>> candidates)
+  public IDictionary<string, (TypeDefinition, TypeDefinition[])> ConsolidateResults(IDictionary<string, (TypeDefinition, IList<TypeDefinition>)> candidates)
   {
-    var consolidated = new Dictionary<string, TypeDefinition[]>();
-    foreach (var (typeName, matches) in candidates)
+    var consolidated = new Dictionary<string, (TypeDefinition, TypeDefinition[])>();
+    foreach (var (typeName, (type, matches)) in candidates)
     {
       var simpleName = typeName.Split('.').Last();
       var evaluator = new Fastenshtein.Levenshtein(simpleName);
@@ -35,9 +35,11 @@ public class Sanitizer
 
       if (filtered.Count > 0)
       {
-        consolidated[typeName] = filtered
-          .Select(f => f.Type)
-          .ToArray();
+        consolidated[typeName] = (
+          type,
+          filtered
+            .Select(f => f.Type)
+            .ToArray());
         _logger.LogInformation("{Type} has {Count} possible duplicate(s): {Duplicates}", 
           typeName, filtered.Count, string.Join(',', filtered.Select(f => f.Type.FullName)));
       }

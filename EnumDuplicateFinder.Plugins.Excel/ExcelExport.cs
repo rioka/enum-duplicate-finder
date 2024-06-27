@@ -4,19 +4,19 @@ using Mono.Cecil;
 
 namespace EnumDuplicateFinder.Plugins.Excel;
 
-public class ExcelExport : IFileExport<IDictionary<string, TypeDefinition[]>>
+public class ExcelExport : IFileExport<IDictionary<string, (TypeDefinition, TypeDefinition[])>>
 {
   private static readonly int StartRow = 1;
   private static readonly int StartCol = 1;
   
-  public Task SaveTo(IDictionary<string, TypeDefinition[]> content, string file)
+  public Task SaveTo(IDictionary<string, (TypeDefinition, TypeDefinition[])> content, string file)
   {
     using var wb = new XLWorkbook();
     
     var ws = wb.AddWorksheet("Duplicated enums");
     var lastRow = CreateHeaders(ws);
 
-    foreach (var (key, types) in content)
+    foreach (var (key, (enumType, types)) in content)
     {
       SetContent(ws, lastRow, StartCol, key);
       foreach (var type in types)

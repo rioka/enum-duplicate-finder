@@ -30,12 +30,12 @@ public class DuplicateDetector
   /// <remarks>
   /// All logic is hard-coded now; we cna change this later.
   /// </remarks>
-  public IDictionary<string, IList<TypeDefinition>> FindDuplicatedTypes(IEnumerable<AssemblyDefinition> assemblies)
+  public IDictionary<string, (TypeDefinition Type , IList<TypeDefinition> Duplicates)> FindDuplicatedTypes(IEnumerable<AssemblyDefinition> assemblies)
   {
     var assembliesAsList = assemblies.ToList();
     _logger.LogInformation("Scanning {Count} assemblies for potentially duplicated enum types", assembliesAsList.Count);
     
-    var duplicates = new Dictionary<string, IList<TypeDefinition>>();
+    var duplicates = new Dictionary<string, (TypeDefinition, IList<TypeDefinition>)>();
 
     var enumTypes = GetUniqueAssemblies(assembliesAsList)
       .SelectMany(a => a.Modules)
@@ -60,9 +60,11 @@ public class DuplicateDetector
 
       if (potentialMatches.Count > 0)
       {
-        duplicates[name] = potentialMatches
-          .Select(typeName => enumTypes[typeName])
-          .ToList();
+        duplicates[name] = (
+          enumTypes[name], 
+          potentialMatches
+            .Select(typeName => enumTypes[typeName])
+            .ToList());
       }
     }
 
